@@ -80,6 +80,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
+    // CameraX
+    implementation ("androidx.camera:camera-camera2:1.0.2")
+    implementation ("androidx.camera:camera-lifecycle:1.0.2")
+    implementation ("androidx.camera:camera-view:1.0.0-alpha31")
+
+    // Zxing
+    implementation ("com.google.zxing:core:3.3.3")
+
     // Jetpack Navigation
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
