@@ -59,6 +59,9 @@ fun QrCodeAnalyzerScreen(
     eventPublisher: (uiEvent: QrCodeAnalyzerContract.QrCodeAnalyzerUiEvent) -> Unit,
     onClose: () -> Unit
 ) {
+    var newCode by remember {
+        mutableStateOf("")
+    }
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val cameraProviderFuture = remember {
@@ -109,7 +112,7 @@ fun QrCodeAnalyzerScreen(
                     imageAnalysis.setAnalyzer(
                         ContextCompat.getMainExecutor(context),
                         QrCodeAnalyzer { result ->
-                            state.code = result
+                            newCode = result
 
                         }
                     )
@@ -127,7 +130,7 @@ fun QrCodeAnalyzerScreen(
                 },
                 modifier = Modifier.weight(1f))
             Text(
-                text = state.code,
+                text = newCode,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
