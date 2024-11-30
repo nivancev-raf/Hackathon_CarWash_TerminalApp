@@ -101,12 +101,6 @@ fun QrCodeAnalyzerScreen(
                         .build()
                     preview.setSurfaceProvider(previewView.surfaceProvider)
                     val imageAnalysis = ImageAnalysis.Builder()
-                        .setTargetResolution(
-                            Size(
-                                previewView.width,
-                                previewView.height
-                            )
-                        )
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .build()
                     imageAnalysis.setAnalyzer(
@@ -128,7 +122,8 @@ fun QrCodeAnalyzerScreen(
                     }
                     previewView
                 },
-                modifier = Modifier.weight(1f))
+                modifier = Modifier.weight(1f)
+            )
             Text(
                 text = newCode,
                 fontSize = 20.sp,
