@@ -37,7 +37,8 @@ import androidx.navigation.compose.composable
 
 fun NavGraphBuilder.qrCodeAnalyzer(
     route: String,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    navigate: (String) -> Unit
 ) = composable(
     route = route
 ) {
@@ -49,7 +50,8 @@ fun NavGraphBuilder.qrCodeAnalyzer(
         eventPublisher = {
             qrCodeAnalyzerViewModel.setEvent(it)
         },
-        onClose = onClose
+        onClose = onClose,
+        navigate = navigate
     )
 }
 
@@ -57,7 +59,8 @@ fun NavGraphBuilder.qrCodeAnalyzer(
 fun QrCodeAnalyzerScreen(
     state: QrCodeAnalyzerContract.QrCodeAnalyzerUiState,
     eventPublisher: (uiEvent: QrCodeAnalyzerContract.QrCodeAnalyzerUiEvent) -> Unit,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    navigate: (String) -> Unit
 ) {
     var newCode by remember {
         mutableStateOf("")
@@ -107,7 +110,8 @@ fun QrCodeAnalyzerScreen(
                         ContextCompat.getMainExecutor(context),
                         QrCodeAnalyzer { result ->
                             newCode = result
-
+                            eventPublisher(QrCodeAnalyzerContract.QrCodeAnalyzerUiEvent.SetDataStore(newCode))
+                            navigate("")
                         }
                     )
                     try {
@@ -122,15 +126,8 @@ fun QrCodeAnalyzerScreen(
                     }
                     previewView
                 },
-                modifier = Modifier.weight(1f)
-            )
-            Text(
-                text = newCode,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(32.dp)
+                    .fillMaxSize()
             )
         }
     }

@@ -87,7 +87,7 @@ fun SplashScreen(
             ) {
                 // Enlarged Scan QR Code Button
                 Button(
-                    onClick = { onUserClick("") },
+                    onClick = { onUserClick("qr") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -123,7 +123,7 @@ fun SplashScreen(
 
                 // Default Size for "Continue without Discount" Button
                 Button(
-                    onClick = { eventPublisher(SplashScreenContract.SplashScreenUiEvent.OnContinueWithoutDiscountClick("")) },
+                    onClick = { onUserClick("noQr") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)

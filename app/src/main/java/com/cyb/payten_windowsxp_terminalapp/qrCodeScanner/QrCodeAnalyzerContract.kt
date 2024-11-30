@@ -6,6 +6,6 @@ interface QrCodeAnalyzerContract {
     )
 
     sealed class QrCodeAnalyzerUiEvent {
-        data class Test(val value: String) : QrCodeAnalyzerUiEvent()
+        data class SetDataStore(val value: String) : QrCodeAnalyzerUiEvent()
     }
 }
