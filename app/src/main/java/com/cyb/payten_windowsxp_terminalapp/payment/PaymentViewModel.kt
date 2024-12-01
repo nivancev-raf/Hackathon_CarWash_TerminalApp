@@ -125,9 +125,10 @@ private fun observePayButton() {
 
                     val basePrice = state.value.priceOfToken * state.value.token
                     val discount = basePrice * state.value.discount
-                    val totalPrice = basePrice - discount
+                    val screenTotalPrice = basePrice - discount
+                    val totalPrice = (basePrice - discount) * 120
 
-                    setState { copy(basePrice = basePrice, discountToShow = discount, totalPrice = totalPrice) }
+                    setState { copy(basePrice = basePrice, discountToShow = discount, totalPrice = totalPrice, screenTotalPrice = screenTotalPrice) }
 
                 }
         }
@@ -139,7 +140,6 @@ private fun observePayButton() {
         InterruptedException::class
     )
     private fun sendJsonStringToApos(json: String) {
-
             val intent = Intent("com.payten.ecr.action")
             intent.setPackage("com.payten.paytenapos")
             intent.putExtra("ecrJson", json)

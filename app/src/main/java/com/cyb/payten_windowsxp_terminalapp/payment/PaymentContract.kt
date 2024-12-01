@@ -10,6 +10,7 @@ interface PaymentContract {
         val discount: Float = 0f,
         val discountToShow: Float = 0f,
         val basePrice: Float = 0f,
+        val screenTotalPrice: Float = 0f,
         val totalPrice: Float = 0f,
         val paymentJson: RequestJson? = null
     )
