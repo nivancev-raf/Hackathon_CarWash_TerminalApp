@@ -10,13 +10,15 @@ interface PaymentContract {
         val discount: Float = 0f,
         val discountToShow: Float = 0f,
         val basePrice: Float = 0f,
-        val totalPrice: Float = 0f
+        val totalPrice: Float = 0f,
+        val paymentJson: RequestJson? = null
     )
 
     sealed class PaymentContactUiEvent{
         data class ChangeTokenAmount(val value: Boolean): PaymentContactUiEvent()
         data class ClearDataStore(val value: Boolean): PaymentContactUiEvent()
-        data class SetDiscount(val value: String): PaymentContactUiEvent()
+        data class PayCLick(val value: String): PaymentContactUiEvent()
         data class SetTotalPrice(val value: String): PaymentContactUiEvent()
+
     }
 }

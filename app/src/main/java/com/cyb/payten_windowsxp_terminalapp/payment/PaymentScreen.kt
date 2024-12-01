@@ -240,6 +240,7 @@ fun PaymentScreen(
         Button(
             onClick = {
                 eventPublisher(PaymentContract.PaymentContactUiEvent.ClearDataStore(true))
+                eventPublisher(PaymentContract.PaymentContactUiEvent.PayCLick(state.totalPrice.toString()))
                 onUserClick("Pay €${state.totalPrice}")
             },
             modifier = Modifier
