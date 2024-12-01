@@ -37,4 +37,8 @@
         </receiver>
     </application>
 
+    <queries>
+        <package android:name="com.payten.service" />
+    </queries>
+
 </manifest>

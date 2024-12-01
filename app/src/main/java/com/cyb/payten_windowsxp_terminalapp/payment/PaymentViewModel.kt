@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 
@@ -84,7 +85,7 @@ class PaymentViewModel @SuppressLint("StaticFieldLeak")
                         )
                     ))}
 
-                    sendJsonStringToApos(state.value.paymentJson.toString())
+                    sendJsonStringToApos("sale_request_example.json")
                     print("Payment JSON: ${state.value.paymentJson}")
                 }
         }
@@ -143,31 +144,44 @@ class PaymentViewModel @SuppressLint("StaticFieldLeak")
         InterruptedException::class
     )
     private fun sendJsonStringToApos(json: String) {
-            val i = Intent("android.intent.action.MAIN")
-            i.setComponent(
-                ComponentName(
-                    "com.payten.paytenapos",
-                    "com.payten.paytenapos.ui.activities.SplashActivity"
-                )
-            )
-            i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK)
-            if (i.resolveActivity(context.packageManager) != null) {
-                context.startActivity(i)
-                Log.e("TEST", "activity started")
-            }
-            Thread.sleep(500);
-
-
-
-
+//            val i = Intent("android.intent.action.MAIN")
+//            i.setComponent(
+//                ComponentName(
+//                    "com.payten.paytenapos",
+//                    "com.payten.paytenapos.ui.activities.SplashActivity"
+//                )
+//            )
+//            i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK)
+//            if (i.resolveActivity(context.packageManager) != null) {
+//                context.startActivity(i)
+//                Log.e("TEST", "activity started")
+//            }
+//            Thread.sleep(500);
             val intent = Intent("com.payten.ecr.action")
             intent.setPackage("com.payten.paytenapos")
-            intent.putExtra("ecrJson", json)
+            intent.putExtra("ecrJson", getAssetJsonData(context,json))
             intent.putExtra("senderIntentFilter", "senderIntentFilter")
             intent.putExtra("senderPackage", context.packageName)
             intent.putExtra("senderClass", "com.cyb.payten_windowsxp_terminalapp.MainActivity");
             intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
             context.sendBroadcast(intent)
+    }
+
+    fun getAssetJsonData(context: Context, jsonString: String?): String? {
+        var json: String? = null
+        try {
+            val `is` = context.assets.open(jsonString!!)
+            val size = `is`.available()
+            val buffer = ByteArray(size)
+            `is`.read(buffer)
+            `is`.close()
+            json = String(buffer, charset("UTF-8"))
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            return null
         }
+        return json
+    }
 
 }
+

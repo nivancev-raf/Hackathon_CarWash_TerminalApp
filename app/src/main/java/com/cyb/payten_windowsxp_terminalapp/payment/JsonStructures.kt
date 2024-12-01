@@ -1,6 +1,5 @@
 package com.cyb.payten_windowsxp_terminalapp.payment
 
-
 data class RequestJson(
     val header: Header,
     val request: Request
@@ -30,7 +29,7 @@ data class Id(
 )
 
 data class Amounts(
-    val base: String,
+    val base: String = "100.00",
     val currencyCode: String = "RSD"
 )
 
