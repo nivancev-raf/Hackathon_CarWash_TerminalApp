@@ -25,15 +25,11 @@ import javax.inject.Inject
 class PaymentViewModel @SuppressLint("StaticFieldLeak")
 @Inject constructor(
     private val authStore: AuthStore,
-//    private val getPackageManager: PackageManager
     private val context : Context
 ): ViewModel() {
 
     private val _state = MutableStateFlow(PaymentContract.PaymentContractUiState())
     val state = _state.asStateFlow()
-
-//    private var paymentJson: RequestJson? = null  // Ovo će čuvati JSON u memoriji
-
     private fun setState(reducer: PaymentContract.PaymentContractUiState.() -> PaymentContract.PaymentContractUiState) {
         _state.update(reducer)
     }
@@ -64,31 +60,6 @@ class PaymentViewModel @SuppressLint("StaticFieldLeak")
                 }
         }
     }
-
-
-//    private fun observePayButton() {
-//        viewModelScope.launch {
-//            events
-//                .filterIsInstance<PaymentContract.PaymentContactUiEvent.PayCLick>()
-//                .collect {
-//                    // Ovde treba da se pozove API za plaćanje
-//                    setState { copy(paymentJson = RequestJson(
-//                        header = Header(),
-//                        request = Request(
-//                            financial = Financial(
-//                                transaction = "sale",
-//                                id = Id(),
-//                                amounts = Amounts(base = it.value), // Početna vrednost base
-//                                options = Options()
-//                            )
-//                        )
-//                    ))}
-//
-//                    Log.d("Payment JSON", state.value.paymentJson.toString())
-////                    sendJsonStringToApos("sale_request_example.json")
-//                }
-//        }
-//    }
 private fun observePayButton() {
     viewModelScope.launch {
         events
@@ -109,7 +80,7 @@ private fun observePayButton() {
                         )
                     ))
                 }
-
+                sendJsonStringToApos(state.value.paymentJson.toString())
                 Log.d("Payment JSON", state.value.paymentJson.toString())
             }
     }
@@ -168,22 +139,10 @@ private fun observePayButton() {
         InterruptedException::class
     )
     private fun sendJsonStringToApos(json: String) {
-//            val i = Intent("android.intent.action.MAIN")
-//            i.setComponent(
-//                ComponentName(
-//                    "com.payten.paytenapos",
-//                    "com.payten.paytenapos.ui.activities.SplashActivity"
-//                )
-//            )
-//            i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK)
-//            if (i.resolveActivity(context.packageManager) != null) {
-//                context.startActivity(i)
-//                Log.e("TEST", "activity started")
-//            }
-//            Thread.sleep(500);
+
             val intent = Intent("com.payten.ecr.action")
             intent.setPackage("com.payten.paytenapos")
-            intent.putExtra("ecrJson", getAssetJsonData(context,json))
+            intent.putExtra("ecrJson", json)
             intent.putExtra("senderIntentFilter", "senderIntentFilter")
             intent.putExtra("senderPackage", context.packageName)
             intent.putExtra("senderClass", "com.cyb.payten_windowsxp_terminalapp.MainActivity");
@@ -191,7 +150,13 @@ private fun observePayButton() {
             context.sendBroadcast(intent)
     }
 
-    fun getAssetJsonData(context: Context, jsonString: String?): String? {
+
+
+}
+
+
+/*
+fun getAssetJsonData(context: Context, jsonString: String?): String? {
         var json: String? = null
         try {
             val `is` = context.assets.open(jsonString!!)
@@ -206,6 +171,18 @@ private fun observePayButton() {
         }
         return json
     }
+ */
 
-}
-
+//            val i = Intent("android.intent.action.MAIN")
+//            i.setComponent(
+//                ComponentName(
+//                    "com.payten.paytenapos",
+//                    "com.payten.paytenapos.ui.activities.SplashActivity"
+//                )
+//            )
+//            i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK)
+//            if (i.resolveActivity(context.packageManager) != null) {
+//                context.startActivity(i)
+//                Log.e("TEST", "activity started")
+//            }
+//            Thread.sleep(500);
