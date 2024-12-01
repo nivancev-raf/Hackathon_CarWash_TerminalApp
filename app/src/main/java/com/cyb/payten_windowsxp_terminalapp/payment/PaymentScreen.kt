@@ -59,7 +59,7 @@ fun PaymentScreen(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Welcome Section
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -82,7 +82,6 @@ fun PaymentScreen(
             )
         }
 
-        // Token Adjuster
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -90,7 +89,7 @@ fun PaymentScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                // Decrease Button
+
                 Button(
                     onClick = { eventPublisher(PaymentContract.PaymentContactUiEvent.ChangeTokenAmount(false)) },
                     modifier = Modifier.size(86.dp), // Smaller size to match the design
@@ -108,7 +107,6 @@ fun PaymentScreen(
                     )
                 }
 
-                // Token Count
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(horizontal = 16.dp)
@@ -129,7 +127,6 @@ fun PaymentScreen(
                     )
                 }
 
-                // Increase Button
                 Button(
                     onClick = { eventPublisher(PaymentContract.PaymentContactUiEvent.ChangeTokenAmount(true)) },
                     modifier = Modifier.size(86.dp), // Smaller size to match the design
@@ -158,7 +155,6 @@ fun PaymentScreen(
             )
         }
 
-        // Pricing Section
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -226,7 +222,7 @@ fun PaymentScreen(
                     )
                 )
                 Text(
-                    text = "€${state.totalPrice}",
+                    text = "€${state.screenTotalPrice}",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
                         fontWeight = FontWeight.Bold,
@@ -236,10 +232,10 @@ fun PaymentScreen(
             }
         }
 
-        // Pay Button
         Button(
             onClick = {
                 eventPublisher(PaymentContract.PaymentContactUiEvent.ClearDataStore(true))
+                eventPublisher(PaymentContract.PaymentContactUiEvent.PayCLick(state.totalPrice.toString()))
                 onUserClick("Pay €${state.totalPrice}")
             },
             modifier = Modifier
@@ -251,7 +247,7 @@ fun PaymentScreen(
             enabled = state.totalPrice > 0f
         ) {
             Text(
-                text = "Pay €${state.totalPrice}",
+                text = "Pay €${state.screenTotalPrice}",
                 style = MaterialTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.Bold,
                     color = Color.White
