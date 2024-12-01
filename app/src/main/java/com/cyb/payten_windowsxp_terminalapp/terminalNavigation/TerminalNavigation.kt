@@ -10,11 +10,11 @@ import com.cyb.payten_windowsxp_terminalapp.splashScreen.splashScreen
 import com.cyb.payten_windowsxp_terminalapp.thanksScreen.thankYouScreen
 
 @Composable
-fun TerminalNavigation() {
+fun TerminalNavigation(startDestination: String = "splash_screen") {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "splash_screen"
+        startDestination = startDestination
     ) {
         splashScreen(
             route = "splash_screen",
