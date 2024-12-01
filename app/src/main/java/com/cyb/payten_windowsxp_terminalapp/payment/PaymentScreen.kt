@@ -84,57 +84,88 @@ fun PaymentScreen(
                 )
             )
         }
-
-        Button(
-            onClick = {
-                 eventPublisher(PaymentContract.PaymentContactUiEvent.SaveTimeClicked("")) // Emituj događaj za korišćenje sačuvanog vremena
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp)
-                .height(72.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFED6825) // Svetlija narandžasta boja za pozadinu
-            ),
-            shape = RoundedCornerShape(24.dp), // Više zaobljen oblik
-            enabled =  !state.saveTimeClicked
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween, // Razmak između teksta i ikone
-                modifier = Modifier.fillMaxWidth()
+        if (state.savedTime != 0 && !state.saveTimeClicked) {
+            Button(
+                onClick = {
+                    eventPublisher(PaymentContract.PaymentContactUiEvent.SaveTimeClicked(true)) // Emituj događaj za korišćenje sačuvanog vremena
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                    .height(72.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFED6825) // Svetlija narandžasta boja za pozadinu
+                ),
+                shape = RoundedCornerShape(24.dp), // Više zaobljen oblik
             ) {
-                Text(
-                    text = "Use saved time",
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
-                        color = Color.White
-                    ),
-                    modifier = Modifier.padding(start = 4.dp) // Razmak sa leve strane
-                )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(end = 8.dp) // Razmak sa desne strane
+                    horizontalArrangement = Arrangement.SpaceBetween, // Razmak između teksta i ikone
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_arrow_forward_ios_24), // Postavi ikonicu strelice
-                        contentDescription = "Arrow",
-                        tint = Color.White, // Bele boje
-                        modifier = Modifier
-                            .padding(end = 36.dp)
-                                .size(24.dp) // Veličina ikone
-                    )
                     Text(
-                        text = if(state.saveTimeClicked) "0:00" else "${state.savedTime / 60}:${state.savedTime % 60}",
+                        text = "Use saved time",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
                             color = Color.White
                         ),
-                        modifier = Modifier.padding(start = 8.dp) // Razmak pre ikone
+                        modifier = Modifier.padding(start = 4.dp) // Razmak sa leve strane
                     )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(end = 8.dp) // Razmak sa desne strane
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_arrow_forward_ios_24), // Postavi ikonicu strelice
+                            contentDescription = "Arrow",
+                            tint = Color.White, // Bele boje
+                            modifier = Modifier
+                                .padding(end = 36.dp)
+                                .size(24.dp) // Veličina ikone
+                        )
+                        Text(
+                            text = if(state.saveTimeClicked) "0:00" else "${state.savedTime / 60}:${state.savedTime % 60}",
+                            style = MaterialTheme.typography.bodyLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
+                                color = Color.White
+                            ),
+                            modifier = Modifier.padding(start = 8.dp) // Razmak pre ikone
+                        )
 
+                    }
+                }
+            }
+        }else if (state.saveTimeClicked) {
+            Button(
+                onClick = {
+                    eventPublisher(PaymentContract.PaymentContactUiEvent.SaveTimeClicked(false)) // Emituj događaj za korišćenje sačuvanog vremena
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                    .height(72.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFED6825) // Svetlija narandžasta boja za pozadinu
+                ),
+                shape = RoundedCornerShape(24.dp), // Više zaobljen oblik
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween, // Razmak između teksta i ikone
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Don't use saved time",
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        ),
+                        modifier = Modifier.padding(start = 4.dp) // Razmak sa leve strane
+                    )
                 }
             }
         }

@@ -3,6 +3,9 @@ package com.cyb.payten_windowsxp_terminalapp.payment
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class RequestJson(
     @SerializedName("header")
     val header: Header,
@@ -18,6 +21,7 @@ data class RequestJson(
     }
 }
 
+@Serializable
 data class Header(
     @SerializedName("length")
     val length: String = "259",
@@ -26,12 +30,12 @@ data class Header(
     @SerializedName("version")
     val version: String = "01"
 )
-
+@Serializable
 data class Request(
     @SerializedName("financial")
     val financial: Financial
 )
-
+@Serializable
 data class Financial(
     @SerializedName("transaction")
     val transaction: String,
@@ -42,7 +46,7 @@ data class Financial(
     @SerializedName("options")
     val options: Options
 )
-
+@Serializable
 
 data class Id(
     @SerializedName("XXXecr")
@@ -52,14 +56,14 @@ data class Id(
     @SerializedName("XXXcardName")
     val XXXcardName: String = "kukuruz|B1|kokice"
 )
-
+@Serializable
 data class Amounts(
     @SerializedName("base")
     val base: String,
     @SerializedName("currencyCode")
     val currencyCode: String = "RSD"
 )
-
+@Serializable
 data class Options(
     @SerializedName("language")
     val language: String = "sr",

@@ -95,7 +95,7 @@ private fun observePayButton() {
             setState {
                 val timeInt = authData.time.split(":")
                 val finalTime = timeInt[1].toInt() + timeInt[0].toInt()*60
-                copy(username = authData.first_name, membership = authData.membership, discount = authData.discount, savedTime = 250)
+                copy(username = authData.first_name, membership = authData.membership, discount = authData.discount, savedTime = finalTime)
             }
             setState { copy(paymentJson = RequestJson(
                 header = Header(),
@@ -158,16 +158,24 @@ private fun observePayButton() {
     private fun observeSavedTimeButton(){
         viewModelScope.launch {
             events.filterIsInstance<PaymentContract.PaymentContactUiEvent.SaveTimeClicked>()
-                .collect{
-                    setState { copy(
-                        time = state.value.time + state.value.savedTime,
-                        saveTimeClicked = true
-                    ) }
+                .collect{ event->
+
+                    if (event.value) {
+                        setState { copy(
+                            time = state.value.time + state.value.savedTime,
+                            saveTimeClicked = event.value
+                        ) }
+                    } else {
+                        setState {
+                            copy(
+                                time = state.value.time - state.value.savedTime,
+                                saveTimeClicked = event.value
+                            )
+                        }
+                    }
                 }
         }
     }
-
-
 }
 
 

@@ -21,7 +21,7 @@ interface PaymentContract {
         data class ChangeTokenAmount(val value: Boolean): PaymentContactUiEvent()
         data class ClearDataStore(val value: Boolean): PaymentContactUiEvent()
         data class PayCLick(val value: String): PaymentContactUiEvent()
-        data class SaveTimeClicked(val value: String): PaymentContactUiEvent()
+        data class SaveTimeClicked(val value: Boolean): PaymentContactUiEvent()
 
     }
 }
