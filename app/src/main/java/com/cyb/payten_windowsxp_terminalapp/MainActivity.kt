@@ -1,5 +1,7 @@
 package com.cyb.payten_windowsxp_terminalapp
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -11,31 +13,28 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContent {
+            TerminalNavigation("splash_screen")
+        }
+        handleIntent(intent)
+    }
 
-        val navigateTo = intent.getStringExtra("navigateTo")
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
+    }
 
+    private fun handleIntent(intent: Intent?) {
+        val navigateTo = intent?.getStringExtra("navigateTo")
+        Log.d("MainActivityyyy", "Navigating to: $navigateTo")
         if (navigateTo == "thank_you_screen") {
-            // Navigate to the "thank you" screen or perform related actions
-            Log.d("MainActivity", "Navigating to: $navigateTo")
-
             setContent {
                 TerminalNavigation("thank_you_screen")
             }
-        }else {
-            setContent {
-                TerminalNavigation("splash_screen")
-            }
         }
-
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        setContent {
-//            TerminalNavigation("thank_you_screen")
-//        }
-//    }
-
 }

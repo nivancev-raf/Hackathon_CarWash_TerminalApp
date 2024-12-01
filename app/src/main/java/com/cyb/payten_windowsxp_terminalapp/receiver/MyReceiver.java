@@ -3,6 +3,7 @@ package com.cyb.payten_windowsxp_terminalapp.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import com.cyb.payten_windowsxp_terminalapp.MainActivity;
 import org.json.JSONException;
@@ -20,11 +21,19 @@ public class MyReceiver extends BroadcastReceiver {
             String message = resultObject.getString("message");
             Log.d("MyReceiver", "Message: ${}" + message); // Proverili smo ovde stampa Odobreno
             if (message.equals("Odobreno")) {
-                // ovde smo nesto pokusavali ali nije uspelo
+                Log.d("MainActivityyyy", message);
+                Bundle extras = intent.getExtras();
+                if (extras != null) {
+                    for (String key : extras.keySet()) {
+                        Log.d("MyReceiver", "Extra: " + key + " = " + extras.get(key));
+                    }
+                }
                 Intent thankYouIntent = new Intent(context, MainActivity.class);
+                thankYouIntent.setAction(intent.getAction());
                 thankYouIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 thankYouIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                thankYouIntent.putExtra("navigateTo", "thank_you_screen");  // nismo sigurni kako da iskoristimo ovaj deo
+                thankYouIntent.putExtra("navigateTo", "thank_you_screen");
+                Log.d("MyReceiver", "Intent: " + thankYouIntent);
                 context.startActivity(thankYouIntent);
             }
         } catch (JSONException e) {
