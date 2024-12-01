@@ -2,9 +2,11 @@ package com.cyb.payten_windowsxp_terminalapp.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.cyb.payten_windowsxp_terminalapp.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -32,3 +34,10 @@ val Typography = Typography(
     )
     */
 )
+
+val poppinsRegular = TextStyle(fontFamily = FontFamily(Font(R.font.poppins_regular)))
+val poppinsBold = TextStyle(fontFamily = FontFamily(Font(R.font.poppins_bold)))
+val poppinsItalic = TextStyle(fontFamily = FontFamily(Font(R.font.poppins_italic)))
+val poppinsThin = TextStyle(fontFamily = FontFamily(Font(R.font.poppins_thin)))
+val poppinsMedium = TextStyle(fontFamily = FontFamily(Font(R.font.poppins_medium)))
+val poppinsLight = TextStyle(fontFamily = FontFamily(Font(R.font.poppins_light)))

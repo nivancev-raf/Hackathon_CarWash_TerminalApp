@@ -84,6 +84,16 @@ private fun observePayButton() {
                 }
                 sendJsonStringToApos(state.value.paymentJson.toString())
                 Log.d("Payment JSON", state.value.paymentJson.toString())
+
+                authStore.updateAuthData(
+                    AuthData(
+                        user_id = authStore.getAuthData().user_id,
+                        first_name = authStore.getAuthData().first_name,
+                        membership = authStore.getAuthData().membership,
+                        discount = authStore.getAuthData().discount,
+                        time = state.value.time.toString()
+                    )
+                )
             }
     }
 }
@@ -177,36 +187,3 @@ private fun observePayButton() {
         }
     }
 }
-
-
-/*
-fun getAssetJsonData(context: Context, jsonString: String?): String? {
-        var json: String? = null
-        try {
-            val `is` = context.assets.open(jsonString!!)
-            val size = `is`.available()
-            val buffer = ByteArray(size)
-            `is`.read(buffer)
-            `is`.close()
-            json = String(buffer, charset("UTF-8"))
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-            return null
-        }
-        return json
-    }
- */
-
-//            val i = Intent("android.intent.action.MAIN")
-//            i.setComponent(
-//                ComponentName(
-//                    "com.payten.paytenapos",
-//                    "com.payten.paytenapos.ui.activities.SplashActivity"
-//                )
-//            )
-//            i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK)
-//            if (i.resolveActivity(context.packageManager) != null) {
-//                context.startActivity(i)
-//                Log.e("TEST", "activity started")
-//            }
-//            Thread.sleep(500);

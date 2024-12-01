@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.cyb.payten_windowsxp_terminalapp.ui.theme.poppinsBold
+import com.cyb.payten_windowsxp_terminalapp.ui.theme.poppinsMedium
 
 fun NavGraphBuilder.splashScreen(
     route: String,
@@ -65,10 +67,10 @@ fun SplashScreen(
             // Title Text at the Top
             Text(
                 text = "Choose method",
-                style = MaterialTheme.typography.headlineMedium.copy( // Further increased text size
+                style = poppinsBold.copy( // Using Poppins Bold font
                     fontWeight = FontWeight.Bold,
                     fontSize = MaterialTheme.typography.headlineLarge.fontSize.times(1.2f), // Enlarged font
-                    color = Color(0xFFFFA500),
+                    color = Color(0xFFED6825),
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -83,7 +85,6 @@ fun SplashScreen(
                     .padding(top = 128.dp), // Bring buttons closer to the title
                 verticalArrangement = Arrangement.Top, // Start from the top of remaining space
                 horizontalAlignment = Alignment.CenterHorizontally,
-
             ) {
                 // Enlarged Scan QR Code Button
                 Button(
@@ -98,7 +99,8 @@ fun SplashScreen(
                     Text(
                         text = "Scan QR code",
                         color = Color.White,
-                        style = MaterialTheme.typography.headlineSmall.copy( // Larger text in the button
+                        style = poppinsBold.copy( // Poppins Bold for button text
+                            fontSize = MaterialTheme.typography.headlineSmall.fontSize.times(1.5f),
                             fontWeight = FontWeight.Bold
                         ),
                         textAlign = TextAlign.Center
@@ -110,16 +112,16 @@ fun SplashScreen(
                 // OR Separator
                 Text(
                     text = "OR",
-                    style = MaterialTheme.typography.headlineSmall.copy( // Increased text size
+                    style = poppinsMedium.copy( // Poppins Medium for "OR"
                         fontWeight = FontWeight.Bold,
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
                         color = Color.Black
                     ),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(vertical = 16.dp) // Reduce spacing between buttons and text
+                    modifier = Modifier.padding(vertical = 16.dp)
                 )
 
                 Spacer(modifier = Modifier.height(48.dp))
-
 
                 // Default Size for "Continue without Discount" Button
                 Button(
@@ -134,7 +136,9 @@ fun SplashScreen(
                     Text(
                         text = "Continue without Discount",
                         color = Color.White,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = poppinsMedium.copy( // Poppins Medium for button text
+                            fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f)
+                        ),
                         textAlign = TextAlign.Center
                     )
                 }

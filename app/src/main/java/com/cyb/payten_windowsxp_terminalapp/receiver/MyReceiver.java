@@ -32,7 +32,7 @@ public class MyReceiver extends BroadcastReceiver {
                 thankYouIntent.setAction(intent.getAction());
                 thankYouIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 thankYouIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                thankYouIntent.putExtra("navigateTo", "thank_you_screen");
+                thankYouIntent.putExtra("navigateTo", "splash_screen");
                 Log.d("MyReceiver", "Intent: " + thankYouIntent);
                 context.startActivity(thankYouIntent);
             }

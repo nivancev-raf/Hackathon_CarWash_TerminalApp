@@ -29,6 +29,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.cyb.payten_windowsxp_terminalapp.R
+import com.cyb.payten_windowsxp_terminalapp.ui.theme.poppinsBold
+import com.cyb.payten_windowsxp_terminalapp.ui.theme.poppinsMedium
 
 fun NavGraphBuilder.payment(
     route: String,
@@ -63,13 +65,13 @@ fun PaymentScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+        // Welcome Section
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = if (state.username.isNotBlank()) "Welcome, ${state.username}!" else "Welcome!",
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontWeight = FontWeight.Bold,
+                style = poppinsBold.copy( // Using custom font for bold text
                     fontSize = MaterialTheme.typography.headlineLarge.fontSize.times(1.3f),
                     color = Color(0xFFED6825)
                 ),
@@ -77,99 +79,67 @@ fun PaymentScreen(
             )
             Text(
                 text = state.membership,
-                style = MaterialTheme.typography.bodyLarge.copy(
+                style = poppinsMedium.copy( // Using custom medium font
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.2f),
                     color = Color(0xFFED6825),
-                    fontWeight = FontWeight.Bold
                 )
             )
         }
+
+        // Saved Time Button
         if (state.savedTime != 0 && !state.saveTimeClicked) {
             Button(
                 onClick = {
-                    eventPublisher(PaymentContract.PaymentContactUiEvent.SaveTimeClicked(true)) // Emituj događaj za korišćenje sačuvanog vremena
+                    eventPublisher(PaymentContract.PaymentContactUiEvent.SaveTimeClicked(true))
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp)
                     .height(72.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFED6825) // Svetlija narandžasta boja za pozadinu
+                    containerColor = Color(0xFFED6825)
                 ),
-                shape = RoundedCornerShape(24.dp), // Više zaobljen oblik
+                shape = RoundedCornerShape(24.dp),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween, // Razmak između teksta i ikone
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
                         text = "Use saved time",
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.Bold,
+                        style = poppinsBold.copy(
                             fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
                             color = Color.White
                         ),
-                        modifier = Modifier.padding(start = 4.dp) // Razmak sa leve strane
+                        modifier = Modifier.padding(start = 4.dp)
                     )
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(end = 8.dp) // Razmak sa desne strane
+                        modifier = Modifier.padding(end = 8.dp)
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.baseline_arrow_forward_ios_24), // Postavi ikonicu strelice
+                            painter = painterResource(id = R.drawable.baseline_arrow_forward_ios_24),
                             contentDescription = "Arrow",
-                            tint = Color.White, // Bele boje
+                            tint = Color.White,
                             modifier = Modifier
                                 .padding(end = 36.dp)
-                                .size(24.dp) // Veličina ikone
+                                .size(24.dp)
                         )
                         Text(
-                            text = if(state.saveTimeClicked) "0:00" else "${state.savedTime / 60}:${state.savedTime % 60}",
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.Bold,
+                            text = if (state.saveTimeClicked) "0:00" else "${state.savedTime / 60}:${state.savedTime % 60}",
+                            style = poppinsBold.copy(
                                 fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
                                 color = Color.White
                             ),
-                            modifier = Modifier.padding(start = 8.dp) // Razmak pre ikone
+                            modifier = Modifier.padding(start = 8.dp)
                         )
-
                     }
-                }
-            }
-        }else if (state.saveTimeClicked) {
-            Button(
-                onClick = {
-                    eventPublisher(PaymentContract.PaymentContactUiEvent.SaveTimeClicked(false)) // Emituj događaj za korišćenje sačuvanog vremena
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
-                    .height(72.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFED6825) // Svetlija narandžasta boja za pozadinu
-                ),
-                shape = RoundedCornerShape(24.dp), // Više zaobljen oblik
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween, // Razmak između teksta i ikone
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Don't use saved time",
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
-                            color = Color.White,
-                            textAlign = TextAlign.Center
-                        ),
-                        modifier = Modifier.padding(start = 4.dp) // Razmak sa leve strane
-                    )
                 }
             }
         }
 
+        // Token Adjuster
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -177,21 +147,19 @@ fun PaymentScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-
                 Button(
                     onClick = { eventPublisher(PaymentContract.PaymentContactUiEvent.ChangeTokenAmount(false)) },
-                    modifier = Modifier.size(86.dp), // Smaller size to match the design
+                    modifier = Modifier.size(86.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                     shape = RoundedCornerShape(50),
                     enabled = state.token > 0
                 ) {
                     Text(
                         text = "−",
-                        style = MaterialTheme.typography.headlineLarge.copy( // Larger text
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        textAlign = TextAlign.Center
+                        style = poppinsBold.copy(
+                            fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                            color = Color.White
+                        )
                     )
                 }
 
@@ -201,48 +169,46 @@ fun PaymentScreen(
                 ) {
                     Text(
                         text = "${state.token}",
-                        style = MaterialTheme.typography.headlineLarge.copy(
-                            fontWeight = FontWeight.Bold,
+                        style = poppinsBold.copy(
+                            fontSize = MaterialTheme.typography.headlineLarge.fontSize,
                             color = Color.Black
                         )
                     )
                     Text(
                         text = "TOKENS",
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            color = Color(0xFFED6825),
-                            fontWeight = FontWeight.Bold
+                        style = poppinsMedium.copy(
+                            color = Color(0xFFED6825)
                         )
                     )
                 }
 
                 Button(
                     onClick = { eventPublisher(PaymentContract.PaymentContactUiEvent.ChangeTokenAmount(true)) },
-                    modifier = Modifier.size(86.dp), // Smaller size to match the design
+                    modifier = Modifier.size(86.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                     shape = RoundedCornerShape(50)
                 ) {
                     Text(
                         text = "+",
-                        style = MaterialTheme.typography.headlineLarge.copy( // Larger text
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        textAlign = TextAlign.Center
+                        style = poppinsBold.copy(
+                            fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                            color = Color.White
+                        )
                     )
                 }
             }
 
             Text(
                 text = "Time: ${state.time / 60}:${state.time % 60}",
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    fontWeight = FontWeight.Bold, // Bold text
-                    fontSize = MaterialTheme.typography.headlineSmall.fontSize.times(1f), // Larger font size
+                style = poppinsMedium.copy(
+                    fontSize = MaterialTheme.typography.headlineSmall.fontSize,
                     color = Color.Black
                 ),
                 modifier = Modifier.padding(top = 8.dp)
             )
         }
 
+        // Pricing Section
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -260,14 +226,14 @@ fun PaymentScreen(
             ) {
                 Text(
                     text = "Base Price",
-                    style = MaterialTheme.typography.bodyLarge.copy(
+                    style = poppinsMedium.copy(
                         fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.2f),
                         color = Color.Black
                     )
                 )
                 Text(
                     text = "€${state.basePrice}",
-                    style = MaterialTheme.typography.bodyLarge.copy(
+                    style = poppinsMedium.copy(
                         fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.2f),
                         color = Color.Black
                     )
@@ -279,14 +245,14 @@ fun PaymentScreen(
             ) {
                 Text(
                     text = "Member Savings",
-                    style = MaterialTheme.typography.bodyLarge.copy(
+                    style = poppinsMedium.copy(
                         fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.2f),
                         color = Color.Red
                     )
                 )
                 Text(
                     text = "-€${state.discountToShow}",
-                    style = MaterialTheme.typography.bodyLarge.copy(
+                    style = poppinsMedium.copy(
                         fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.2f),
                         color = Color.Red
                     )
@@ -303,29 +269,25 @@ fun PaymentScreen(
             ) {
                 Text(
                     text = "Total Price:",
-                    style = MaterialTheme.typography.bodyLarge.copy(
+                    style = poppinsBold.copy(
                         fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
-                        fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
                 )
                 Text(
                     text = "€${state.screenTotalPrice}",
-                    style = MaterialTheme.typography.bodyLarge.copy(
+                    style = poppinsBold.copy(
                         fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
-                        fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
                 )
             }
         }
 
+        // Pay Button
         Button(
             onClick = {
-                eventPublisher(PaymentContract.PaymentContactUiEvent.ClearDataStore(true))
                 eventPublisher(PaymentContract.PaymentContactUiEvent.PayCLick(state.totalPrice.toString()))
-                //onUserClick("Pay €${state.totalPrice}")
-                //onUserClick("thank")
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -336,9 +298,9 @@ fun PaymentScreen(
             enabled = state.totalPrice > 0f || state.time > 0
         ) {
             Text(
-                text = if(state.token > 0) "Pay €${state.screenTotalPrice}" else "Finish",
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    fontWeight = FontWeight.Bold,
+                text = if (state.token > 0) "Pay €${state.screenTotalPrice}" else "Finish",
+                style = poppinsBold.copy(
+                    fontSize = MaterialTheme.typography.headlineSmall.fontSize,
                     color = Color.White
                 )
             )
