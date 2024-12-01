@@ -10,7 +10,7 @@ import java.io.OutputStream
 
 class AuthDataSerializer : Serializer<AuthData> {
 
-    override val defaultValue: AuthData = AuthData(0,"",0f,"")
+    override val defaultValue: AuthData = AuthData(0,"",0f,"", "00:00")
 
     override suspend fun readFrom(input: InputStream): AuthData {
         return withContext(Dispatchers.IO) {

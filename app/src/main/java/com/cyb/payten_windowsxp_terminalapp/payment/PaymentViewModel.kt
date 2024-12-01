@@ -42,6 +42,7 @@ class PaymentViewModel @SuppressLint("StaticFieldLeak")
         observeTokens()
         observeClearDataStore()
         observePayButton()
+        observeSavedTimeButton()
     }
 
     private fun observeClearDataStore() {
@@ -54,7 +55,8 @@ class PaymentViewModel @SuppressLint("StaticFieldLeak")
                             user_id = -1,
                             first_name = "",
                             membership = "",
-                            discount = 0f
+                            discount = 0f,
+                            time = ""
                         )
                     )
                 }
@@ -91,7 +93,9 @@ private fun observePayButton() {
 
         if (authData.user_id != -1) {
             setState {
-                copy(username = authData.first_name, membership = authData.membership, discount = authData.discount)
+                val timeInt = authData.time.split("/")
+                val finalTime = timeInt[1].toInt() + timeInt[0].toInt() * 60
+                copy(username = authData.first_name, membership = authData.membership, discount = authData.discount, savedTime = finalTime)
             }
             setState { copy(paymentJson = RequestJson(
                 header = Header(),
@@ -120,7 +124,7 @@ private fun observePayButton() {
                         }
                     }
 
-                    val time = state.value.token * 100
+                    val time = if(state.value.saveTimeClicked) state.value.token * 100 + state.value.savedTime else state.value.token * 100
                     setState { copy(time = time) }
 
                     val basePrice = state.value.priceOfToken * state.value.token
@@ -151,7 +155,27 @@ private fun observePayButton() {
     }
 
 
+    private fun observeSavedTimeButton(){
+        viewModelScope.launch {
+            events.filterIsInstance<PaymentContract.PaymentContactUiEvent.SaveTimeClicked>()
+                .collect{ event->
 
+                    if (event.value) {
+                        setState { copy(
+                            time = state.value.time + state.value.savedTime,
+                            saveTimeClicked = event.value
+                        ) }
+                    } else {
+                        setState {
+                            copy(
+                                time = state.value.time - state.value.savedTime,
+                                saveTimeClicked = event.value
+                            )
+                        }
+                    }
+                }
+        }
+    }
 }
 
 

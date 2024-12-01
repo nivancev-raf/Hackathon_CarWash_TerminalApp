@@ -46,12 +46,17 @@ class QrCodeAnalyzerViewModel @Inject constructor(
                 key to value
             }
 
-        return AuthData(
+        val authData = AuthData(
             user_id = map["USER_ID"]?.toInt() ?: throw IllegalArgumentException("USER_ID is missing or invalid"),
             membership = map["MEMBERSHIP"] ?: throw IllegalArgumentException("MEMBERSHIP is missing"),
             discount = map["DISCOUNT"]?.toFloat() ?: throw IllegalArgumentException("DISCOUNT is missing or invalid"),
-            first_name = map["FIRST_NAME"] ?: throw IllegalArgumentException("FIRST_NAME is missing")
+            first_name = map["FIRST_NAME"] ?: throw IllegalArgumentException("FIRST_NAME is missing"),
+            time = map["TIME"] ?: throw IllegalArgumentException("TIME is missing")
         )
+
+        println(authData)
+
+        return authData
     }
 
 }
