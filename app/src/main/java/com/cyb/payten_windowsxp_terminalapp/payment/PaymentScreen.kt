@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,12 +21,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.cyb.payten_windowsxp_terminalapp.R
 
 fun NavGraphBuilder.payment(
     route: String,
@@ -68,7 +71,7 @@ fun PaymentScreen(
                 style = MaterialTheme.typography.headlineLarge.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = MaterialTheme.typography.headlineLarge.fontSize.times(1.3f),
-                    color = Color(0xFFFFA500)
+                    color = Color(0xFFED6825)
                 ),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -76,10 +79,64 @@ fun PaymentScreen(
                 text = state.membership,
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.2f),
-                    color = Color(0xFFFFA500),
+                    color = Color(0xFFED6825),
                     fontWeight = FontWeight.Bold
                 )
             )
+        }
+
+        Button(
+            onClick = {
+                 eventPublisher(PaymentContract.PaymentContactUiEvent.SaveTimeClicked("")) // Emituj događaj za korišćenje sačuvanog vremena
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp)
+                .height(72.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFED6825) // Svetlija narandžasta boja za pozadinu
+            ),
+            shape = RoundedCornerShape(24.dp), // Više zaobljen oblik
+            enabled =  !state.saveTimeClicked
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween, // Razmak između teksta i ikone
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Use saved time",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
+                        color = Color.White
+                    ),
+                    modifier = Modifier.padding(start = 4.dp) // Razmak sa leve strane
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(end = 8.dp) // Razmak sa desne strane
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_arrow_forward_ios_24), // Postavi ikonicu strelice
+                        contentDescription = "Arrow",
+                        tint = Color.White, // Bele boje
+                        modifier = Modifier
+                            .padding(end = 36.dp)
+                                .size(24.dp) // Veličina ikone
+                    )
+                    Text(
+                        text = if(state.saveTimeClicked) "0:00" else "${state.savedTime / 60}:${state.savedTime % 60}",
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
+                            color = Color.White
+                        ),
+                        modifier = Modifier.padding(start = 8.dp) // Razmak pre ikone
+                    )
+
+                }
+            }
         }
 
         Column(
@@ -121,7 +178,7 @@ fun PaymentScreen(
                     Text(
                         text = "TOKENS",
                         style = MaterialTheme.typography.bodyLarge.copy(
-                            color = Color(0xFFFFA500),
+                            color = Color(0xFFED6825),
                             fontWeight = FontWeight.Bold
                         )
                     )
@@ -244,10 +301,10 @@ fun PaymentScreen(
                 .height(64.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
             shape = RoundedCornerShape(50),
-            enabled = state.totalPrice > 0f
+            enabled = state.totalPrice > 0f || state.time > 0
         ) {
             Text(
-                text = "Pay €${state.screenTotalPrice}",
+                text = if(state.token > 0) "Pay €${state.screenTotalPrice}" else "Finish",
                 style = MaterialTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.Bold,
                     color = Color.White

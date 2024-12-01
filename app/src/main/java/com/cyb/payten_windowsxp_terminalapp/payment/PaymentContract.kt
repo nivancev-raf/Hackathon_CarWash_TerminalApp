@@ -7,6 +7,8 @@ interface PaymentContract {
         val priceOfToken: Float = 1f,
         val token: Int = 0,
         val time: Int = 0,
+        val savedTime: Int = 0,
+        val saveTimeClicked: Boolean = false,
         val discount: Float = 0f,
         val discountToShow: Float = 0f,
         val basePrice: Float = 0f,
@@ -19,7 +21,7 @@ interface PaymentContract {
         data class ChangeTokenAmount(val value: Boolean): PaymentContactUiEvent()
         data class ClearDataStore(val value: Boolean): PaymentContactUiEvent()
         data class PayCLick(val value: String): PaymentContactUiEvent()
-        data class SetTotalPrice(val value: String): PaymentContactUiEvent()
+        data class SaveTimeClicked(val value: String): PaymentContactUiEvent()
 
     }
 }

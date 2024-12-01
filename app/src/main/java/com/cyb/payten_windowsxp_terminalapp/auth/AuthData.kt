@@ -8,5 +8,6 @@ data class AuthData(
     val user_id: Int,
     val membership: String,
     val discount: Float,
-    val first_name: String
+    val first_name: String,
+    val time: String
 )
