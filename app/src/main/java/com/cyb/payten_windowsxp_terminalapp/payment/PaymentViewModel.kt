@@ -93,8 +93,8 @@ private fun observePayButton() {
 
         if (authData.user_id != -1) {
             setState {
-                val timeInt = authData.time.split(":")
-                val finalTime = timeInt[1].toInt() + timeInt[0].toInt()*60
+                val timeInt = authData.time.split("/")
+                val finalTime = timeInt[1].toInt() + timeInt[0].toInt() * 60
                 copy(username = authData.first_name, membership = authData.membership, discount = authData.discount, savedTime = finalTime)
             }
             setState { copy(paymentJson = RequestJson(
