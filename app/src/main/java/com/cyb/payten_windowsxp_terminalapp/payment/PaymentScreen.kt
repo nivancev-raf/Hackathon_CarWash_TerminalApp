@@ -324,7 +324,8 @@ fun PaymentScreen(
             onClick = {
                 eventPublisher(PaymentContract.PaymentContactUiEvent.ClearDataStore(true))
                 eventPublisher(PaymentContract.PaymentContactUiEvent.PayCLick(state.totalPrice.toString()))
-                onUserClick("Pay €${state.totalPrice}")
+                //onUserClick("Pay €${state.totalPrice}")
+                //onUserClick("thank")
             },
             modifier = Modifier
                 .fillMaxWidth()

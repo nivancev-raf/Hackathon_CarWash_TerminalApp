@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
         android:allowBackup="true"
@@ -35,6 +36,9 @@
                 <action android:name="com.payten.devicemanager.DefaultEcrApp" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".splashScreen.SplashScreenKt" />
+
     </application>
 
     <queries>
