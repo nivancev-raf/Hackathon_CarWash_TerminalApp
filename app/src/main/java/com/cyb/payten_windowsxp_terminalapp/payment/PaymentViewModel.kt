@@ -2,7 +2,6 @@ package com.cyb.payten_windowsxp_terminalapp.payment
 
 
 import android.annotation.SuppressLint
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.RemoteException
@@ -67,29 +66,54 @@ class PaymentViewModel @SuppressLint("StaticFieldLeak")
     }
 
 
-    private fun observePayButton() {
-        viewModelScope.launch {
-            events
-                .filterIsInstance<PaymentContract.PaymentContactUiEvent.PayCLick>()
-                .collect {
-                    // Ovde treba da se pozove API za plaćanje
-                    setState { copy(paymentJson = RequestJson(
+//    private fun observePayButton() {
+//        viewModelScope.launch {
+//            events
+//                .filterIsInstance<PaymentContract.PaymentContactUiEvent.PayCLick>()
+//                .collect {
+//                    // Ovde treba da se pozove API za plaćanje
+//                    setState { copy(paymentJson = RequestJson(
+//                        header = Header(),
+//                        request = Request(
+//                            financial = Financial(
+//                                transaction = "sale",
+//                                id = Id(),
+//                                amounts = Amounts(base = it.value), // Početna vrednost base
+//                                options = Options()
+//                            )
+//                        )
+//                    ))}
+//
+//                    Log.d("Payment JSON", state.value.paymentJson.toString())
+////                    sendJsonStringToApos("sale_request_example.json")
+//                }
+//        }
+//    }
+private fun observePayButton() {
+    viewModelScope.launch {
+        events
+            .filterIsInstance<PaymentContract.PaymentContactUiEvent.PayCLick>()
+            .collect {
+                setState {
+                    copy(paymentJson = RequestJson(
                         header = Header(),
                         request = Request(
                             financial = Financial(
                                 transaction = "sale",
                                 id = Id(),
-                                amounts = Amounts(base = it.value), // Početna vrednost base
+                                amounts = Amounts(
+                                    base = String.format("%.2f", it.value.toDouble())
+                                ),
                                 options = Options()
                             )
                         )
-                    ))}
-
-                    sendJsonStringToApos("sale_request_example.json")
-                    print("Payment JSON: ${state.value.paymentJson}")
+                    ))
                 }
-        }
+
+                Log.d("Payment JSON", state.value.paymentJson.toString())
+            }
     }
+}
 
     private fun populateState() {
         val authData = authStore.authData.value
