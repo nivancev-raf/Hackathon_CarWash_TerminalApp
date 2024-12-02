@@ -18,10 +18,9 @@ fun TerminalNavigation(
     startDestination: String = "splash_screen"
 ) {
     val navController = rememberNavController()
-
     LaunchedEffect(txStatus) {
         Log.d("message--LaunchedEffect", txStatus.toString())
-        if(txStatus != null) {
+        if(txStatus != null && txStatus.txId != "clear") {
             Log.d("message--LaunchedEffect1", txStatus.toString())
             if (txStatus.success) {
                 navController.navigate("washing")

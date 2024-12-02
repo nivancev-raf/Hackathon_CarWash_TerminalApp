@@ -25,22 +25,22 @@ class MainActivity : ComponentActivity() {
 
     private var paymentState = MutableStateFlow<TxStatus?>(null)
 
-    @SuppressLint("UnspecifiedRegisterReceiverFlag")
+    @SuppressLint("UnspecifiedRegisterReceiverFlag", "StateFlowValueCalledInComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        paymentReceiver = PaymentReceiver { txStatus ->
+            paymentState.getAndUpdate { txStatus }
+            Log.d("message--txState", "$txStatus")
+        }
         setContent {
             val txState by paymentState.collectAsState()
-
+            Log.d("message--txStateeeee222", "$txState")
             TerminalNavigation(
-                txStatus = txState,
+                txStatus = paymentState.value,
                 "splash_screen"
             )
         }
 
-        paymentReceiver = PaymentReceiver { txStatus ->
-            Log.d("message--txState", "$txStatus")
-            paymentState.getAndUpdate { txStatus }
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(
@@ -55,6 +55,7 @@ class MainActivity : ComponentActivity() {
             )
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

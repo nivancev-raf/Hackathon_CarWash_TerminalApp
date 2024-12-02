@@ -60,8 +60,6 @@ class QrCodeAnalyzerViewModel @Inject constructor(
             time = time1
         )
 
-        println(authData)
-
         return authData
     }
 

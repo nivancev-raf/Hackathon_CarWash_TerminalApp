@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.cyb.payten_windowsxp_terminalapp.MainActivity
 import org.json.JSONObject
 
 class PaymentReceiver(
@@ -24,6 +25,12 @@ class PaymentReceiver(
                 var message = resultObject.getString("message")
                 Log.d("message--odgovor", message)
                 if (message == "Odobreno") {
+                    context?.let {
+                        val returnIntent = Intent(it, MainActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        }
+                        it.startActivity(returnIntent)
+                    }
                     true
                 } else {
                     false
@@ -48,6 +55,6 @@ class PaymentReceiver(
 }
 
 data class TxStatus(
-    val txId: String,
+    val txId: String = "clear",
     val success: Boolean,
 )
