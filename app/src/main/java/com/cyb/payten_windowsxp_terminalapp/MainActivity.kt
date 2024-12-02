@@ -31,9 +31,9 @@ class MainActivity : ComponentActivity() {
     private fun handleIntent(intent: Intent?) {
         val navigateTo = intent?.getStringExtra("navigateTo")
         Log.d("MainActivityyyy", "Navigating to: $navigateTo")
-        if (navigateTo == "washing") {
+        if (navigateTo != null) {
             setContent {
-                TerminalNavigation("washing")
+                TerminalNavigation(navigateTo)
             }
         }
     }

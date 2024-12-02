@@ -19,22 +19,22 @@ public class MyReceiver extends BroadcastReceiver {
             JSONObject financialObject = jsonObject.getJSONObject("response").getJSONObject("financial");
             JSONObject resultObject = financialObject.getJSONObject("result");
             String message = resultObject.getString("message");
-            Log.d("MyReceiver", "Message: ${}" + message); // Proverili smo ovde stampa Odobreno
             if (message.equals("Odobreno")) {
-                Log.d("MainActivityyyy", message);
-                Bundle extras = intent.getExtras();
-                if (extras != null) {
-                    for (String key : extras.keySet()) {
-                        Log.d("MyReceiver", "Extra: " + key + " = " + extras.get(key));
-                    }
-                }
-                Intent thankYouIntent = new Intent(context, MainActivity.class);
-                thankYouIntent.setAction(intent.getAction());
-                thankYouIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                thankYouIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                thankYouIntent.putExtra("navigateTo", "splash_screen");
-                Log.d("MyReceiver", "Intent: " + thankYouIntent);
-                context.startActivity(thankYouIntent);
+                Intent wasingIntent = new Intent(context, MainActivity.class);
+                wasingIntent.setAction(intent.getAction());
+                wasingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                wasingIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                wasingIntent.putExtra("navigateTo", "washing");
+                Log.d("MyReceiver", "Intent: " + wasingIntent);
+                context.startActivity(wasingIntent);
+            } else {
+                Intent failedIntent = new Intent(context, MainActivity.class);
+                failedIntent.setAction(intent.getAction());
+                failedIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                failedIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                failedIntent.putExtra("navigateTo", "fail_screen");
+                Log.d("MyReceiver", "Intent: " + failedIntent);
+                context.startActivity(failedIntent);
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);

@@ -3,6 +3,7 @@ package com.cyb.payten_windowsxp_terminalapp.terminalNavigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.cyb.payten_windowsxp_terminalapp.failScreen.failScreen
 import com.cyb.payten_windowsxp_terminalapp.payment.payment
 import com.cyb.payten_windowsxp_terminalapp.qrCodeScanner.qrCodeAnalyzer
 import com.cyb.payten_windowsxp_terminalapp.splashScreen.splashScreen
@@ -43,6 +44,13 @@ fun TerminalNavigation(
         washingScreens(
             route = "washing",
             onUserClick = {
+                navController.navigate(route = "splash_screen")
+            }
+        )
+
+        failScreen(
+            route = "fail_screen",
+            onTryAgainClick = {
                 navController.navigate(route = "splash_screen")
             }
         )
