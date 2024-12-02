@@ -1,16 +1,18 @@
 package com.cyb.payten_windowsxp_terminalapp.terminalNavigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.cyb.payten_windowsxp_terminalapp.failScreen.failScreen
 import com.cyb.payten_windowsxp_terminalapp.payment.payment
 import com.cyb.payten_windowsxp_terminalapp.qrCodeScanner.qrCodeAnalyzer
 import com.cyb.payten_windowsxp_terminalapp.splashScreen.splashScreen
-import com.cyb.payten_windowsxp_terminalapp.thanksScreen.thankYouScreen
+import com.cyb.payten_windowsxp_terminalapp.washingScreen.washingScreens
 
 @Composable
-fun TerminalNavigation(startDestination: String = "splash_screen") {
+fun TerminalNavigation(
+    startDestination: String = "splash_screen"
+) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -39,9 +41,16 @@ fun TerminalNavigation(startDestination: String = "splash_screen") {
             onUserClick = {
             }
         )
-        thankYouScreen(
-            route = "thank_you_screen",
+        washingScreens(
+            route = "washing",
             onUserClick = {
+                navController.navigate(route = "splash_screen")
+            }
+        )
+
+        failScreen(
+            route = "fail_screen",
+            onTryAgainClick = {
                 navController.navigate(route = "splash_screen")
             }
         )
