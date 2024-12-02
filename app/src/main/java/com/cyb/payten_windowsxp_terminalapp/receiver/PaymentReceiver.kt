@@ -22,14 +22,16 @@ class PaymentReceiver(
                 hashFinal = hash
                 val financialObject = jsonObject.getJSONObject("response").getJSONObject("financial")
                 val resultObject = financialObject.getJSONObject("result")
-                var message = resultObject.getString("message")
+                val message = resultObject.getString("message")
                 Log.d("message--odgovor", message)
+
+                // Ako je poruka "Odobreno", otvori glavnu aktivnost
                 if (message == "Odobreno") {
                     context?.let {
-                        val returnIntent = Intent(it, MainActivity::class.java).apply {
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        val intent = Intent(it, MainActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                         }
-                        it.startActivity(returnIntent)
+                        it.startActivity(intent)
                     }
                     true
                 } else {
@@ -37,8 +39,9 @@ class PaymentReceiver(
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                false
             }
-        } == true
+        } ?: false
 
         if (isSuccess) {
             Log.d("message--hashFinal", hashFinal)
@@ -51,6 +54,7 @@ class PaymentReceiver(
             )
         }
     }
+
 
 }
 
