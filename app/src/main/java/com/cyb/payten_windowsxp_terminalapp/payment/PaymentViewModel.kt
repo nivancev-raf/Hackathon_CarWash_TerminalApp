@@ -100,7 +100,6 @@ private fun observePayButton() {
 
     private fun populateState() {
         val authData = authStore.authData.value
-
         if (authData.user_id != -1) {
             setState {
                 val timeInt = authData.time.split("/")

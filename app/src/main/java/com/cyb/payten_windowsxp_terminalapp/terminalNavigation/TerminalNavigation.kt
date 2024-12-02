@@ -39,6 +39,7 @@ fun TerminalNavigation(
         payment(
             route = "payment",
             onUserClick = {
+                navController.navigate(route = "washing")
             }
         )
         washingScreens(

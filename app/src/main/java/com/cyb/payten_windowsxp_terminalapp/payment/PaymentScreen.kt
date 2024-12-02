@@ -137,6 +137,48 @@ fun PaymentScreen(
                     }
                 }
             }
+        } else if (state.saveTimeClicked){
+            Button(
+                onClick = {
+                    eventPublisher(PaymentContract.PaymentContactUiEvent.SaveTimeClicked(false))
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                    .height(72.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFED6825)
+                ),
+                shape = RoundedCornerShape(24.dp),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Don't use saved time",
+                        style = poppinsBold.copy(
+                            fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
+                            color = Color.White
+                        ),
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(end = 8.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_arrow_forward_ios_24),
+                            contentDescription = "Arrow",
+                            tint = Color.White,
+                            modifier = Modifier
+                                .padding(end = 36.dp)
+                                .size(24.dp)
+                        )
+                    }
+                }
+            }
         }
 
         // Token Adjuster
@@ -287,7 +329,11 @@ fun PaymentScreen(
         // Pay Button
         Button(
             onClick = {
-                eventPublisher(PaymentContract.PaymentContactUiEvent.PayCLick(state.totalPrice.toString()))
+                if (!state.saveTimeClicked) {
+                    eventPublisher(PaymentContract.PaymentContactUiEvent.PayCLick(state.totalPrice.toString()))
+                } else {
+                    onUserClick("washer")
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
