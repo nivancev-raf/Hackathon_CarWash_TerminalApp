@@ -91,7 +91,7 @@ private fun observePayButton() {
                         first_name = authStore.getAuthData().first_name,
                         membership = authStore.getAuthData().membership,
                         discount = authStore.getAuthData().discount,
-                        time = state.value.time
+                        time = state.value.time // 200
                     )
                 )
             }
@@ -100,7 +100,7 @@ private fun observePayButton() {
 
     private fun populateState() {
         val authData = authStore.authData.value
-        setState { copy(savedTime = 200) }
+        //setState { copy(savedTime = 200) }
         if (authData.user_id != -1) {
             setState {
                 copy(username = authData.first_name, membership = authData.membership, discount = authData.discount, savedTime = authData.time)
@@ -152,6 +152,8 @@ private fun observePayButton() {
         InterruptedException::class
     )
     private fun sendJsonStringToApos(json: String) {
+            Log.d("DATASTORE--", authStore.authData.value.toString())
+            Log.d("DATASTORE--", json)
             val intent = Intent("com.payten.ecr.action")
             intent.setPackage("com.payten.paytenapos")
             intent.putExtra("ecrJson", json)
@@ -167,7 +169,6 @@ private fun observePayButton() {
         viewModelScope.launch {
             events.filterIsInstance<PaymentContract.PaymentContactUiEvent.SaveTimeClicked>()
                 .collect{ event->
-
                     if (event.value) {
                         setState { copy(
                             time = state.value.time + state.value.savedTime,
@@ -176,7 +177,7 @@ private fun observePayButton() {
                     } else {
                         setState {
                             copy(
-                                time = state.value.time - state.value.savedTime,
+                                time = state.value.time - state.value.savedTime, // t: 200s // s:100s // u:300 -> 200 //
                                 saveTimeClicked = event.value
                             )
                         }

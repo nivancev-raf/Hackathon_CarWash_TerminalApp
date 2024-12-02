@@ -19,8 +19,7 @@ class PaymentReceiver(
                 hashFinal = hash
                 val financialObject = jsonObject.getJSONObject("response").getJSONObject("financial")
                 val resultObject = financialObject.getJSONObject("result")
-                val message = resultObject.getString("message")
-
+                var message = resultObject.getString("message")
                 // Directly return onResult here
                 if (message == "Odobreno") {
                     true

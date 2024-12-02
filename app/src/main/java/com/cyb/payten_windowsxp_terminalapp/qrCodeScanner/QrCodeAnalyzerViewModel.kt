@@ -1,5 +1,6 @@
 package com.cyb.payten_windowsxp_terminalapp.qrCodeScanner
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cyb.payten_windowsxp_terminalapp.auth.AuthData
@@ -33,6 +34,7 @@ class QrCodeAnalyzerViewModel @Inject constructor(
             events
                 .filterIsInstance<QrCodeAnalyzerContract.QrCodeAnalyzerUiEvent.SetDataStore>()
                 .collect { event ->
+                    Log.d("event----", event.value)
                     val authData = parseAuthData(event.value)
                     authStore.updateAuthData(authData)
                 }
@@ -49,7 +51,7 @@ class QrCodeAnalyzerViewModel @Inject constructor(
         val timeParts = timeString.split("/")
         if (timeParts.size != 2) throw IllegalArgumentException("TIME format is invalid")
         val time1 = timeParts[0].toInt() * 60 + timeParts[1].toInt()
-
+        Log.d("time1", "$time1")
         val authData = AuthData(
             user_id = map["USER_ID"]?.toInt() ?: throw IllegalArgumentException("USER_ID is missing or invalid"),
             membership = map["MEMBERSHIP"] ?: throw IllegalArgumentException("MEMBERSHIP is missing"),
