@@ -45,7 +45,7 @@ class WashingScreenViewModel @Inject constructor(
                             first_name = "",
                             membership = "",
                             discount = 0f,
-                            time = "0/00"
+                            time = 0
                         )
                     )
                     delay(3000L)
@@ -67,7 +67,7 @@ class WashingScreenViewModel @Inject constructor(
     private fun populateState() {
         viewModelScope.launch {
             val time = authStore.getAuthData().time.toInt()
-            setState { copy(time = 5) }
+            setState { copy(time = time) }
         }
     }
 

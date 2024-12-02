@@ -20,6 +20,7 @@ public class MyReceiver extends BroadcastReceiver {
             JSONObject resultObject = financialObject.getJSONObject("result");
             String message = resultObject.getString("message");
             if (message.equals("Odobreno")) {
+                Log.d("MyReceiver", "Approved");
                 Intent wasingIntent = new Intent(context, MainActivity.class);
                 wasingIntent.setAction(intent.getAction());
                 wasingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

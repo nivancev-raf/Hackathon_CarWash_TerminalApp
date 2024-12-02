@@ -329,7 +329,8 @@ fun PaymentScreen(
         // Pay Button
         Button(
             onClick = {
-                if (!state.saveTimeClicked) {
+                println("----Token: ${state.token} Total Price: ${state.totalPrice} Time: ${state.time} Screen Total Price: ${state.screenTotalPrice}")
+                if (state.token > 0) {
                     eventPublisher(PaymentContract.PaymentContactUiEvent.PayCLick(state.totalPrice.toString()))
                 } else {
                     onUserClick("washer")
