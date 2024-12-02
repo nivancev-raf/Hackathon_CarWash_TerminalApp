@@ -56,7 +56,7 @@ class PaymentViewModel @SuppressLint("StaticFieldLeak")
                             first_name = "",
                             membership = "",
                             discount = 0f,
-                            time = ""
+                            time = 0
                         )
                     )
                 }
@@ -91,7 +91,7 @@ private fun observePayButton() {
                         first_name = authStore.getAuthData().first_name,
                         membership = authStore.getAuthData().membership,
                         discount = authStore.getAuthData().discount,
-                        time = state.value.time.toString()
+                        time = state.value.time
                     )
                 )
             }
@@ -102,9 +102,7 @@ private fun observePayButton() {
         val authData = authStore.authData.value
         if (authData.user_id != -1) {
             setState {
-                val timeInt = authData.time.split("/")
-                val finalTime = timeInt[1].toInt() + timeInt[0].toInt() * 60
-                copy(username = authData.first_name, membership = authData.membership, discount = authData.discount, savedTime = finalTime)
+                copy(username = authData.first_name, membership = authData.membership, discount = authData.discount, savedTime = authData.time)
             }
             setState { copy(paymentJson = RequestJson(
                 header = Header(),

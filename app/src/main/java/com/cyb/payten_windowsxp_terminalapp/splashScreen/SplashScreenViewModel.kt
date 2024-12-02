@@ -37,7 +37,7 @@ class SplashScreenViewModel @Inject constructor(
                     first_name = "",
                     membership = "",
                     discount = 0f,
-                    time = ""
+                    time = 0
                 )
             )
         }

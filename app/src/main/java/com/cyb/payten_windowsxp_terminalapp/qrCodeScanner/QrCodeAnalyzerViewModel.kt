@@ -45,13 +45,17 @@ class QrCodeAnalyzerViewModel @Inject constructor(
                 val (key, value) = it.split(":")
                 key to value
             }
+        val timeString = map["TIME"] ?: throw IllegalArgumentException("TIME is missing")
+        val timeParts = timeString.split("/")
+        if (timeParts.size != 2) throw IllegalArgumentException("TIME format is invalid")
+        val time1 = timeParts[0].toInt() * 60 + timeParts[1].toInt()
 
         val authData = AuthData(
             user_id = map["USER_ID"]?.toInt() ?: throw IllegalArgumentException("USER_ID is missing or invalid"),
             membership = map["MEMBERSHIP"] ?: throw IllegalArgumentException("MEMBERSHIP is missing"),
             discount = map["DISCOUNT"]?.toFloat() ?: throw IllegalArgumentException("DISCOUNT is missing or invalid"),
             first_name = map["FIRST_NAME"] ?: throw IllegalArgumentException("FIRST_NAME is missing"),
-            time = map["TIME"] ?: throw IllegalArgumentException("TIME is missing")
+            time = time1
         )
 
         println(authData)

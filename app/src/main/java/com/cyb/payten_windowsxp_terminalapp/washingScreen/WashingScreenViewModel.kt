@@ -45,7 +45,7 @@ class WashingScreenViewModel @Inject constructor(
                             first_name = "",
                             membership = "",
                             discount = 0f,
-                            time = ""
+                            time = 0
                         )
                     )
                     delay(3000L)
