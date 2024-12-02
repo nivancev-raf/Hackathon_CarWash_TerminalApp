@@ -37,11 +37,12 @@ class QrCodeAnalyzerViewModel @Inject constructor(
                     Log.d("event----", event.value)
                     val authData = parseAuthData(event.value)
                     authStore.updateAuthData(authData)
+                    setStete { copy(loadedQR = true)}
                 }
         }
     }
 
-    fun parseAuthData(input: String): AuthData {
+     fun parseAuthData(input: String): AuthData {
         val map = input.split(";")
             .associate {
                 val (key, value) = it.split(":")
