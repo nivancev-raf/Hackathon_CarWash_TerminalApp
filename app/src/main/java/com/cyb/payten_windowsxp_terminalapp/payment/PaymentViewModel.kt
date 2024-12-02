@@ -83,7 +83,7 @@ private fun observePayButton() {
                     ))
                 }
                 sendJsonStringToApos(state.value.paymentJson.toString())
-                Log.d("Payment JSON", state.value.paymentJson.toString())
+                Log.d("--Payment JSON", state.value.paymentJson.toString())
 
                 authStore.updateAuthData(
                     AuthData(

@@ -28,10 +28,10 @@ class MainActivity : ComponentActivity() {
         handleIntent(intent)
     }
 
-    private fun handleIntent(intent: Intent?) {
+    private fun handleIntent(intent: Intent?) {//ovde ne radi na 2. put pozivanja
         val navigateTo = intent?.getStringExtra("navigateTo")
-        Log.d("MainActivityyyy", "Navigating to: $navigateTo")
         if (navigateTo != null) {
+            Log.d("MainActivityyyy", "Navigating to: $navigateTo")
             setContent {
                 TerminalNavigation(navigateTo)
             }
