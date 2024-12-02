@@ -1,5 +1,6 @@
 package com.cyb.payten_windowsxp_terminalapp.terminalNavigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
@@ -19,7 +20,9 @@ fun TerminalNavigation(
     val navController = rememberNavController()
 
     LaunchedEffect(txStatus) {
+        Log.d("message--LaunchedEffect", txStatus.toString())
         if(txStatus != null) {
+            Log.d("message--LaunchedEffect1", txStatus.toString())
             if (txStatus.success) {
                 navController.navigate("washing")
             } else {

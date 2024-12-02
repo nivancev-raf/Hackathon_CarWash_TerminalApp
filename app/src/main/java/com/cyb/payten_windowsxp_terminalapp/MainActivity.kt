@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
         }
 
         paymentReceiver = PaymentReceiver { txStatus ->
-            Log.d("txStatus", "$txStatus")
+            Log.d("message--txState", "$txStatus")
             paymentState.getAndUpdate { txStatus }
         }
 

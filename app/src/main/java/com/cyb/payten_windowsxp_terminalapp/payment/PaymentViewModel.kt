@@ -99,23 +99,26 @@ private fun observePayButton() {
 }
 
     private fun populateState() {
-        val authData = authStore.authData.value
-        //setState { copy(savedTime = 200) }
-        if (authData.user_id != -1) {
-            setState {
-                copy(username = authData.first_name, membership = authData.membership, discount = authData.discount, savedTime = authData.time)
-            }
-            setState { copy(paymentJson = RequestJson(
-                header = Header(),
-                request = Request(
-                    financial = Financial(
-                        transaction = "sale",
-                        id = Id(),
-                        amounts = Amounts(base = "0.00"), // Početna vrednost base
-                        options = Options()
+        viewModelScope.launch {
+            val authData = authStore.authData.value
+            //setState { copy(savedTime = 200) }
+            if (authData.user_id != -1) {
+                setState {
+                    copy(username = authData.first_name, membership = authData.membership, discount = authData.discount, savedTime = authData.time)
+                }
+                setState { copy(paymentJson = RequestJson(
+                    header = Header(),
+                    request = Request(
+                        financial = Financial(
+                            transaction = "sale",
+                            id = Id(),
+                            amounts = Amounts(base = "0.00"), // Početna vrednost base
+                            options = Options()
+                        )
                     )
-                )
-            ))}
+                ))}
+            }
+
         }
     }
 

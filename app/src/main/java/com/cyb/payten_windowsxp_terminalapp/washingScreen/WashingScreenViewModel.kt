@@ -1,5 +1,6 @@
 package com.cyb.payten_windowsxp_terminalapp.washingScreen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cyb.payten_windowsxp_terminalapp.auth.AuthData
@@ -28,10 +29,15 @@ class WashingScreenViewModel @Inject constructor(
     fun setEvent(event: WashingScreenContract.WashingScreenUiEvent) = viewModelScope.launch { events.emit(event) }
 
     init {
+        Log.d("message--", "init1")
         populateState()
+        Log.d("message--", "init2")
         observeStartWashing()
+        Log.d("message--", "init3")
         observeSwitchToThanks()
+        Log.d("message--", "init4")
         observeSwitchToSplash()
+        Log.d("message--", "init5")
     }
 
     private fun observeSwitchToSplash() {
