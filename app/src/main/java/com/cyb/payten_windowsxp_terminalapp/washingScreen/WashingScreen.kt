@@ -1,5 +1,6 @@
 package com.cyb.payten_windowsxp_terminalapp.washingScreen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,124 +54,128 @@ fun ThankYouScreen(
     onUserClick: (String) -> Unit
 ) {
 
-    if(state.switchToSplash) {
+    if (state.switchToSplash) {
         onUserClick("")
-    }
-
-    if (!state.startWashing) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Button(
-                onClick = {
-                    eventPublisher(
-                        WashingScreenContract.WashingScreenUiEvent.StartWashingChange(true)
-                    )
-                },
+    } else {
+        if (!state.startWashing) {
+            Log.d("message--", "start washing!")
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.9f) // Increased width to 90% of the screen
-                    .height(350.dp), // Increased height for a larger button
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Black
-                ),
-                shape = MaterialTheme.shapes.medium
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Button(
+                    onClick = {
+                        eventPublisher(
+                            WashingScreenContract.WashingScreenUiEvent.StartWashingChange(true)
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f) // Increased width to 90% of the screen
+                        .height(350.dp), // Increased height for a larger button
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black
+                    ),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Log.d("message--", "start washing!!")
+                    Text(
+                        text = "START\nWASHING",
+                        style = poppinsBold.copy( // Using Poppins Bold font
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 48.sp, // Larger font size
+                            color = Color.White,
+                            lineHeight = 50.sp // Increased line spacing for better visibility
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        } else if (state.startWashing && !state.readyForThanks) {
+            Log.d("message--", "start washing")
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.Center, // Center everything vertically
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "START\nWASHING",
+                    text = "REMAINING",
                     style = poppinsBold.copy( // Using Poppins Bold font
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 32.sp, // Larger font size
+                        color = Color.Black
+                    ),
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Text(
+                    text = "TIME",
+                    style = poppinsBold.copy( // Using Poppins Bold font
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 32.sp, // Larger font size
+                        color = Color.Black
+                    ),
+                    modifier = Modifier.padding(bottom = 32.dp) // Added space between TIME and timer
+                )
+
+                Text(
+                    text = formatTime(state.time), // Replace with dynamic time if needed
+                    style = poppinsBold.copy( // Using Poppins Bold font
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 64.sp, // Extra large font size
+                        color = Color.Black
+                    ),
+                    modifier = Modifier.padding(bottom = 64.dp) // Space between timer and button
+                )
+
+                // End Washing Button
+                Button(
+                    onClick = {
+                        eventPublisher(
+                            WashingScreenContract.WashingScreenUiEvent.SwitchToThanks(true)
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f) // Increased button width
+                        .height(250.dp), // Increased button height
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black
+                    ),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Text(
+                        text = "END\nWASHING",
+                        style = poppinsBold.copy( // Using Poppins Bold font
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 48.sp, // Larger font size
+                            color = Color.White,
+                            lineHeight = 50.sp // Increased line spacing for better visibility
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        } else if (state.readyForThanks) {
+            Log.d("message--", "readyForThanks")
+            eventPublisher(WashingScreenContract.WashingScreenUiEvent.SwitchToSplash(true))
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "THANK YOU FOR\nUSING OUR CAR\nWASH!",
+                    style = poppinsBold.copy(
+                        // Using Poppins Bold font
                         fontWeight = FontWeight.Bold,
-                        fontSize = 48.sp, // Larger font size
-                        color = Color.White,
-                        lineHeight = 50.sp // Increased line spacing for better visibility
+                        fontSize = 36.sp, // Increased font size
+                        color = Color.Black,
+                        lineHeight = 65.sp, // Adjusted line spacing
                     ),
                     textAlign = TextAlign.Center
                 )
             }
-        }
-    } else if (state.startWashing && !state.readyForThanks) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.Center, // Center everything vertically
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Remaining Time Section
-            Text(
-                text = "REMAINING",
-                style = poppinsBold.copy( // Using Poppins Bold font
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 32.sp, // Larger font size
-                    color = Color.Black
-                ),
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            Text(
-                text = "TIME",
-                style = poppinsBold.copy( // Using Poppins Bold font
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 32.sp, // Larger font size
-                    color = Color.Black
-                ),
-                modifier = Modifier.padding(bottom = 32.dp) // Added space between TIME and timer
-            )
-
-            Text(
-                text = formatTime(state.time), // Replace with dynamic time if needed
-                style = poppinsBold.copy( // Using Poppins Bold font
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 64.sp, // Extra large font size
-                    color = Color.Black
-                ),
-                modifier = Modifier.padding(bottom = 64.dp) // Space between timer and button
-            )
-
-            // End Washing Button
-            Button(
-                onClick = {
-                    eventPublisher(
-                        WashingScreenContract.WashingScreenUiEvent.SwitchToThanks(true)
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth(0.9f) // Increased button width
-                    .height(250.dp), // Increased button height
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Black
-                ),
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Text(
-                    text = "END\nWASHING",
-                    style = poppinsBold.copy( // Using Poppins Bold font
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 48.sp, // Larger font size
-                        color = Color.White,
-                        lineHeight = 50.sp // Increased line spacing for better visibility
-                    ),
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-    } else if (state.readyForThanks) {
-        eventPublisher(WashingScreenContract.WashingScreenUiEvent.SwitchToSplash(true))
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "THANK YOU FOR\nUSING OUR CAR\nWASH!",
-                style = poppinsBold.copy( // Using Poppins Bold font
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 36.sp, // Increased font size
-                    color = Color.Black,
-                    lineHeight = 65.sp, // Adjusted line spacing
-                ),
-                textAlign = TextAlign.Center
-            )
         }
     }
 }

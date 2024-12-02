@@ -30,7 +30,7 @@ class AuthStore @Inject constructor(
             newAuthData
         }
 
-        Log.d("AuthStore", "Data updated: $newAuthData")
+        Log.d("AuthStore-", "Data updated: $newAuthData")
     }
 
     suspend fun getAuthData(): AuthData {

@@ -1,19 +1,35 @@
 package com.cyb.payten_windowsxp_terminalapp.terminalNavigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.cyb.payten_windowsxp_terminalapp.failScreen.failScreen
 import com.cyb.payten_windowsxp_terminalapp.payment.payment
 import com.cyb.payten_windowsxp_terminalapp.qrCodeScanner.qrCodeAnalyzer
+import com.cyb.payten_windowsxp_terminalapp.receiver.TxStatus
 import com.cyb.payten_windowsxp_terminalapp.splashScreen.splashScreen
 import com.cyb.payten_windowsxp_terminalapp.washingScreen.washingScreens
 
 @Composable
 fun TerminalNavigation(
+    txStatus: TxStatus?,
     startDestination: String = "splash_screen"
 ) {
     val navController = rememberNavController()
+    LaunchedEffect(txStatus) {
+        Log.d("message--LaunchedEffect", txStatus.toString())
+        if(txStatus != null && txStatus.txId != "clear") {
+            Log.d("message--LaunchedEffect1", txStatus.toString())
+            if (txStatus.success) {
+                navController.navigate("washing")
+            } else {
+                navController.navigate("fail_screen")
+            }
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination = startDestination

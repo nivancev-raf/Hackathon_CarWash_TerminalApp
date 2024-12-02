@@ -62,73 +62,80 @@ fun QrCodeAnalyzerScreen(
     onClose: () -> Unit,
     navigate: (String) -> Unit
 ) {
-    var newCode by remember {
-        mutableStateOf("")
-    }
-    val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val cameraProviderFuture = remember {
-        ProcessCameraProvider.getInstance(context)
-    }
-
-    var hasCameraPromission by remember {
-        mutableStateOf(
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
-        )
-    }
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { granted ->
-            hasCameraPromission = granted
+    if (state.loadedQR) {
+        navigate("payment")
+    } else {
+        var newCode by remember {
+            mutableStateOf("")
         }
-    )
-    LaunchedEffect(key1 = true) {
-        launcher.launch(Manifest.permission.CAMERA)
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        if (hasCameraPromission) {
+        val context = LocalContext.current
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val cameraProviderFuture = remember {
+            ProcessCameraProvider.getInstance(context)
+        }
 
-            AndroidView(
-                factory = { context ->
-                    val previewView = PreviewView(context)
-                    val preview = Preview.Builder().build()
-                    val selector = CameraSelector.Builder()
-                        .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                        .build()
-                    preview.setSurfaceProvider(previewView.surfaceProvider)
-                    val imageAnalysis = ImageAnalysis.Builder()
-                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                        .build()
-                    imageAnalysis.setAnalyzer(
-                        ContextCompat.getMainExecutor(context),
-                        QrCodeAnalyzer { result ->
-                            newCode = result
-                            eventPublisher(QrCodeAnalyzerContract.QrCodeAnalyzerUiEvent.SetDataStore(newCode))
-                            navigate("")
-                        }
-                    )
-                    try {
-                        cameraProviderFuture.get().bindToLifecycle(
-                            lifecycleOwner,
-                            selector,
-                            preview,
-                            imageAnalysis
-                        )
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                    previewView
-                },
-                modifier = Modifier
-                    .fillMaxSize()
+        var hasCameraPromission by remember {
+            mutableStateOf(
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
             )
+        }
+
+        val launcher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = { granted ->
+                hasCameraPromission = granted
+            }
+        )
+        LaunchedEffect(key1 = true) {
+            launcher.launch(Manifest.permission.CAMERA)
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            if (hasCameraPromission) {
+
+                AndroidView(
+                    factory = { context ->
+                        val previewView = PreviewView(context)
+                        val preview = Preview.Builder().build()
+                        val selector = CameraSelector.Builder()
+                            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                            .build()
+                        preview.setSurfaceProvider(previewView.surfaceProvider)
+                        val imageAnalysis = ImageAnalysis.Builder()
+                            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                            .build()
+                        imageAnalysis.setAnalyzer(
+                            ContextCompat.getMainExecutor(context),
+                            QrCodeAnalyzer { result ->
+                                newCode = result
+                                eventPublisher(
+                                    QrCodeAnalyzerContract.QrCodeAnalyzerUiEvent.SetDataStore(
+                                        newCode
+                                    )
+                                )
+                            }
+                        )
+                        try {
+                            cameraProviderFuture.get().bindToLifecycle(
+                                lifecycleOwner,
+                                selector,
+                                preview,
+                                imageAnalysis
+                            )
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        previewView
+                    },
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
+            }
         }
     }
 }

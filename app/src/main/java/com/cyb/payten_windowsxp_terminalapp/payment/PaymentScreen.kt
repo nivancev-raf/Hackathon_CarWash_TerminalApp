@@ -129,7 +129,7 @@ fun PaymentScreen(
                         Text(
                             text = if (state.saveTimeClicked) "0:00" else "${state.savedTime / 60}:${state.savedTime % 60}",
                             style = poppinsBold.copy(
-                                fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f),
+                                fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.1f),
                                 color = Color.White
                             ),
                             modifier = Modifier.padding(start = 8.dp)
@@ -329,7 +329,8 @@ fun PaymentScreen(
         // Pay Button
         Button(
             onClick = {
-                if (!state.saveTimeClicked) {
+                println("----Token: ${state.token} Total Price: ${state.totalPrice} Time: ${state.time} Screen Total Price: ${state.screenTotalPrice}")
+                if (state.token > 0) {
                     eventPublisher(PaymentContract.PaymentContactUiEvent.PayCLick(state.totalPrice.toString()))
                 } else {
                     onUserClick("washer")

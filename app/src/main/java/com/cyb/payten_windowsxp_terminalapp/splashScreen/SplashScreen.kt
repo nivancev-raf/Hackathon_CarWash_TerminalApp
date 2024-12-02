@@ -137,7 +137,7 @@ fun SplashScreen(
                         text = "Continue without Discount",
                         color = Color.White,
                         style = poppinsMedium.copy( // Poppins Medium for button text
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.3f)
+                            fontSize = MaterialTheme.typography.bodyLarge.fontSize.times(1.1f)
                         ),
                         textAlign = TextAlign.Center
                     )

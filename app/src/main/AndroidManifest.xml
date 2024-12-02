@@ -35,21 +35,13 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".receiver.MyReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="senderIntentFilter" />
-                <action android:name="com.payten.devicemanager.DefaultEcrApp" />
-            </intent-filter>
-        </receiver>
+<!--        <receiver-->
+<!--            android:name=".receiver.MyReceiver"-->
+<!--            android:exported="true">-->
 
-        <activity android:name=".splashScreen.SplashScreenKt" />
+<!--        </receiver>-->
 
     </application>
 
-    <queries>
-        <package android:name="com.payten.service" />
-    </queries>
 
 </manifest>

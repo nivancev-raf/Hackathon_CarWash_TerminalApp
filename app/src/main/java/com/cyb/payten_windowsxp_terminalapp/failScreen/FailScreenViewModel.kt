@@ -17,15 +17,17 @@ import javax.inject.Inject
 @HiltViewModel
 class FailScreenViewModel @Inject constructor(
     private val authStore: AuthStore
-) : ViewModel(){
+) : ViewModel() {
     private val _state = MutableStateFlow(FailScreenContract.FailScreenState())
     val state = _state.asStateFlow()
-    private fun setState(reducer: FailScreenContract.FailScreenState.() ->
-    FailScreenContract.FailScreenState
+    private fun setState(
+        reducer: FailScreenContract.FailScreenState.() ->
+        FailScreenContract.FailScreenState
     ) = _state.update(reducer)
 
     private val events = MutableSharedFlow<FailScreenContract.FailScreenUiEvent>()
-    fun setEvent(event: FailScreenContract.FailScreenUiEvent) = viewModelScope.launch { events.emit(event) }
+    fun setEvent(event: FailScreenContract.FailScreenUiEvent) =
+        viewModelScope.launch { events.emit(event) }
 
     init {
         observeTryAgainClick()
@@ -35,14 +37,14 @@ class FailScreenViewModel @Inject constructor(
         viewModelScope.launch {
             events
                 .filterIsInstance<FailScreenContract.FailScreenUiEvent>()
-                .collect{event ->
+                .collect { event ->
                     authStore.updateAuthData(
                         AuthData(
                             user_id = -1,
                             first_name = "",
                             membership = "",
                             discount = 0f,
-                            time = ""
+                            time = 0
                         )
                     )
                 }

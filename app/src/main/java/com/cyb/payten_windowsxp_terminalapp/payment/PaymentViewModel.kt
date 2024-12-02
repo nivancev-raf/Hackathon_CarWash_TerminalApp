@@ -56,7 +56,7 @@ class PaymentViewModel @SuppressLint("StaticFieldLeak")
                             first_name = "",
                             membership = "",
                             discount = 0f,
-                            time = ""
+                            time = 0
                         )
                     )
                 }
@@ -83,7 +83,7 @@ private fun observePayButton() {
                     ))
                 }
                 sendJsonStringToApos(state.value.paymentJson.toString())
-                Log.d("Payment JSON", state.value.paymentJson.toString())
+                Log.d("--Payment JSON", state.value.paymentJson.toString())
 
                 authStore.updateAuthData(
                     AuthData(
@@ -91,7 +91,7 @@ private fun observePayButton() {
                         first_name = authStore.getAuthData().first_name,
                         membership = authStore.getAuthData().membership,
                         discount = authStore.getAuthData().discount,
-                        time = state.value.time.toString()
+                        time = state.value.time // 200
                     )
                 )
             }
@@ -99,24 +99,26 @@ private fun observePayButton() {
 }
 
     private fun populateState() {
-        val authData = authStore.authData.value
-        if (authData.user_id != -1) {
-            setState {
-                val timeInt = authData.time.split("/")
-                val finalTime = timeInt[1].toInt() + timeInt[0].toInt() * 60
-                copy(username = authData.first_name, membership = authData.membership, discount = authData.discount, savedTime = finalTime)
-            }
-            setState { copy(paymentJson = RequestJson(
-                header = Header(),
-                request = Request(
-                    financial = Financial(
-                        transaction = "sale",
-                        id = Id(),
-                        amounts = Amounts(base = "0.00"), // Početna vrednost base
-                        options = Options()
+        viewModelScope.launch {
+            val authData = authStore.authData.value
+            //setState { copy(savedTime = 200) }
+            if (authData.user_id != -1) {
+                setState {
+                    copy(username = authData.first_name, membership = authData.membership, discount = authData.discount, savedTime = authData.time)
+                }
+                setState { copy(paymentJson = RequestJson(
+                    header = Header(),
+                    request = Request(
+                        financial = Financial(
+                            transaction = "sale",
+                            id = Id(),
+                            amounts = Amounts(base = "0.00"), // Početna vrednost base
+                            options = Options()
+                        )
                     )
-                )
-            ))}
+                ))}
+            }
+
         }
     }
 
@@ -153,6 +155,8 @@ private fun observePayButton() {
         InterruptedException::class
     )
     private fun sendJsonStringToApos(json: String) {
+            Log.d("DATASTORE--", authStore.authData.value.toString())
+            Log.d("DATASTORE--", json)
             val intent = Intent("com.payten.ecr.action")
             intent.setPackage("com.payten.paytenapos")
             intent.putExtra("ecrJson", json)
@@ -168,7 +172,6 @@ private fun observePayButton() {
         viewModelScope.launch {
             events.filterIsInstance<PaymentContract.PaymentContactUiEvent.SaveTimeClicked>()
                 .collect{ event->
-
                     if (event.value) {
                         setState { copy(
                             time = state.value.time + state.value.savedTime,
@@ -177,7 +180,7 @@ private fun observePayButton() {
                     } else {
                         setState {
                             copy(
-                                time = state.value.time - state.value.savedTime,
+                                time = state.value.time - state.value.savedTime, // t: 200s // s:100s // u:300 -> 200 //
                                 saveTimeClicked = event.value
                             )
                         }
