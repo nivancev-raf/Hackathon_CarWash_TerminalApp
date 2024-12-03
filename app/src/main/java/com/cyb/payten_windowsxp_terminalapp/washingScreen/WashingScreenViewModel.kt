@@ -72,7 +72,7 @@ class WashingScreenViewModel @Inject constructor(
 
     private fun populateState() {
         viewModelScope.launch {
-            val time = authStore.getAuthData().time.toInt()
+            val time = authStore.getAuthData().time
             setState { copy(time = time) }
         }
     }
